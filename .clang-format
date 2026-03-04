@@ -1,0 +1,82 @@
+---
+BasedOnStyle: WebKit
+UseTab: Never
+IndentWidth: 2
+Language: Cpp
+# Alignment
+AlignAfterOpenBracket : Align
+AlignArrayOfStructures : Right
+AlignConsecutiveAssignments: true 
+AlignConsecutiveBitFields : AcrossEmptyLinesAndComments
+AlignConsecutiveDeclarations : true
+AlignConsecutiveMacros: AcrossEmptyLines
+AlignEscapedNewlines : Right
+AlignOperands : AlignAfterOperator
+AlignTrailingComments : true
+
+#Layout
+AllowAllArgumentsOnNextLine : true
+AllowAllParametersOfDeclarationOnNextLine: true
+
+#Short
+AllowShortBlocksOnASingleLine : Always
+AllowShortCaseLabelsOnASingleLine : false
+AllowShortEnumsOnASingleLine : false
+AllowShortFunctionsOnASingleLine : Empty
+AllowShortIfStatementsOnASingleLine : Never
+AllowShortLoopsOnASingleLine : true
+
+AlwaysBreakAfterReturnType : None
+AlwaysBreakBeforeMultilineStrings : false
+AlwaysBreakTemplateDeclarations : No
+
+BinPackArguments : true
+BinPackParameters : true
+BitFieldColonSpacing : Both
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: true
+  AfterStruct: false
+  SplitEmptyFunction: false
+  AfterClass: true
+  AfterCaseLabel : true
+  AfterControlStatement : Always
+  AfterFunction : true
+  AfterNamespace : true
+  AfterObjCDeclaration : true
+  AfterUnion : true
+  AfterExternBlock : false
+  BeforeCatch : true
+  BeforeElse : true
+  BeforeWhile : true
+BreakBeforeBinaryOperators : None
+BreakStringLiterals : true
+
+ColumnLimit : 0
+
+IndentCaseBlocks : true
+IndentCaseLabels : true
+IndentExternBlock : AfterExternBlock
+IndentPPDirectives : None
+
+KeepEmptyLinesAtTheStartOfBlocks : false
+
+PointerAlignment : Left
+QualifierAlignment  : Left
+# QualifierOrder : ['inline', 'static', 'type', 'const', 'volatile' ]
+ReferenceAlignment : Right
+
+SeparateDefinitionBlocks : Always
+
+SortIncludes : CaseInsensitive
+SortUsingDeclarations : true
+
+SpaceAfterCStyleCast : false
+SpaceAfterLogicalNot : false
+SpaceAroundPointerQualifiers : Before
+SpaceBeforeAssignmentOperators : true
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: false
+  AfterFunctionDefinitionName: false
