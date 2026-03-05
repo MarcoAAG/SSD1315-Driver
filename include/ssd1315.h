@@ -21,9 +21,46 @@
 extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
-#include <config.h>
-#include <ssd1315_reg.h>
+/* ============================================================================================== */
+/*                                         Include Files                                          */
+/* ============================================================================================== */
+#include <stdint.h>
+
+typedef int32_t (*SSD1315_WriteFunc)(void*, uint16_t, uint8_t*, uint16_t);
+
+typedef struct
+{
+  SSD1315_WriteFunc WriteReg;
+  void*             handle;
+} SSD1315_CTX_t;
+
+typedef int8_t (*SSD1315_InitFunction)(void);
+typedef int8_t (*SSD1315_DeInitFunction)(void);
+typedef int8_t (*SSD1315_GetTickFunction)(void);
+typedef int8_t (*SSD1315_WriteRegFunction)(uint16_t, uint8_t*, uint16_t);
+
+typedef struct
+{
+  SSD1315_InitFunction     init;
+  SSD1315_DeInitFunction   deInit;
+  SSD1315_GetTickFunction  getTick;
+  SSD1315_WriteRegFunction writeReg;
+} SSD1315_IO_t;
+
+typedef struct
+{
+  SSD1315_IO_t  io;
+  SSD1315_CTX_t ctx;
+  uint8_t       isInitialized;
+  uint8_t       backgroundColor;
+} SSD1315_Object_t;
+
+int32_t SSD1315_RegisterBusIO(SSD1315_Object_t* p_obj, SSD1315_IO_t* p_io);
+int8_t  SSD1315_Init(SSD1315_Object_t* p_obj);
+int32_t SSD1315_DeInit(SSD1315_Object_t* p_obj);
+int32_t SSD1315_DisplayOn(SSD1315_Object_t* p_obj);
+int32_t SSD1315_DisplayOff(SSD1315_Object_t* p_obj);
+int32_t SSD1315_Refresh(SSD1315_Object_t* p_obj);
 
 #ifdef __cplusplus
 }
