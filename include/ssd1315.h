@@ -26,6 +26,13 @@ extern "C" {
 /* ============================================================================================== */
 #include <stdint.h>
 
+typedef enum
+{
+  SSD1315_OK            = 0,
+  SSD1315_ERR           = -1,
+  SSD1315_UNINITIALIZED = -2
+} SSD1315_Status_t;
+
 typedef int32_t (*SSD1315_WriteFunc)(void*, uint16_t, uint8_t*, uint16_t);
 
 typedef struct
@@ -55,12 +62,12 @@ typedef struct
   uint8_t       backgroundColor;
 } SSD1315_Object_t;
 
-int32_t SSD1315_RegisterBusIO(SSD1315_Object_t* p_obj, SSD1315_IO_t* p_io);
-int8_t  SSD1315_Init(SSD1315_Object_t* p_obj);
-int32_t SSD1315_DeInit(SSD1315_Object_t* p_obj);
-int32_t SSD1315_DisplayOn(SSD1315_Object_t* p_obj);
-int32_t SSD1315_DisplayOff(SSD1315_Object_t* p_obj);
-int32_t SSD1315_Refresh(SSD1315_Object_t* p_obj);
+SSD1315_Status_t SSD1315_RegisterBusIO(SSD1315_Object_t* p_obj, SSD1315_IO_t* p_io);
+SSD1315_Status_t SSD1315_Init(SSD1315_Object_t* p_obj);
+SSD1315_Status_t SSD1315_DeInit(SSD1315_Object_t* p_obj);
+SSD1315_Status_t SSD1315_DisplayOn(SSD1315_Object_t* p_obj);
+SSD1315_Status_t SSD1315_DisplayOff(SSD1315_Object_t* p_obj);
+SSD1315_Status_t SSD1315_Refresh(SSD1315_Object_t* p_obj);
 
 #ifdef __cplusplus
 }
