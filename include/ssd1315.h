@@ -24,6 +24,7 @@ extern "C" {
 /* ============================================================================================== */
 /*                                         Include Files                                          */
 /* ============================================================================================== */
+#include <config.h>
 #include <stdint.h>
 
 typedef enum
@@ -32,14 +33,6 @@ typedef enum
   SSD1315_ERR           = -1,
   SSD1315_UNINITIALIZED = -2
 } SSD1315_Status_t;
-
-typedef int32_t (*SSD1315_WriteFunc)(void*, uint16_t, uint8_t*, uint16_t);
-
-typedef struct
-{
-  SSD1315_WriteFunc WriteReg;
-  void*             handle;
-} SSD1315_CTX_t;
 
 typedef int8_t (*SSD1315_InitFunction)(void);
 typedef int8_t (*SSD1315_DeInitFunction)(void);
@@ -56,10 +49,17 @@ typedef struct
 
 typedef struct
 {
-  SSD1315_IO_t  io;
-  SSD1315_CTX_t ctx;
-  uint8_t       isInitialized;
-  uint8_t       backgroundColor;
+  SSD1315_IO_t io;
+  uint8_t      isInitialized;
+  uint8_t      backgroundColor;
+#if defined(__ICCARM__) /* IAR Compiler */
+#pragma data_alignment = 16
+  uint8_t frameBuffer[COLUMN_NUMBER * PAGE_NUMBER];
+#elif defined(__GNUC__) /* GNU Compiler */
+  uint8_t frameBuffer[COLUMN_NUMBER * PAGE_NUMBER] __attribute__((aligned(16u)));
+#else                   /* ARM Compiler */
+  __align(16) uint8_t frameBuffer[COLUMN_NUMBER * PAGE_NUMBER];
+#endif                  /* __ICCARM__ */
 } SSD1315_Object_t;
 
 SSD1315_Status_t SSD1315_RegisterBusIO(SSD1315_Object_t* p_obj, SSD1315_IO_t* p_io);
