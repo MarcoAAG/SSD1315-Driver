@@ -1,5 +1,5 @@
 /**********************************************************************************************************************
- * \file ssd1315.c
+ * \file driver.c
  *
  * \author MarcoAAG
  *
@@ -17,22 +17,22 @@
 /* ============================================================================================== */
 /*                                         Include Files                                          */
 /* ============================================================================================== */
-#include <ssd1315.h>
-#include <ssd1315_reg.h>
+#include <driver.h>
+#include <reg.h>
 #include <stddef.h>
 #include <string.h>
 
-static int32_t          WriteRegWrap(SSD1315_Object_t* p_obj, uint16_t u_reg, uint8_t* u_data, uint16_t u_length);
-static void             Clear(SSD1315_Object_t* p_obj);
-static SSD1315_Status_t Delay(SSD1315_Object_t* p_obj, uint32_t u_delay);
+static int32_t      WriteRegWrap(MOD_Object_t* p_obj, uint16_t u_reg, uint8_t* u_data, uint16_t u_length);
+static void         Clear(MOD_Object_t* p_obj);
+static MOD_Status_t Delay(MOD_Object_t* p_obj, uint32_t u_delay);
 
-SSD1315_Status_t SSD1315_RegisterBusIO(SSD1315_Object_t* p_obj, SSD1315_IO_t* p_io)
+MOD_Status_t MOD_RegisterBusIO(MOD_Object_t* p_obj, MOD_IO_t* p_io)
 {
-  SSD1315_Status_t ret = SSD1315_OK;
+  MOD_Status_t ret = MOD_OK;
 
   if((p_obj == NULL) || (p_io == NULL))
   {
-    ret = SSD1315_ERR;
+    ret = MOD_ERR;
   }
   else
   {
@@ -43,21 +43,21 @@ SSD1315_Status_t SSD1315_RegisterBusIO(SSD1315_Object_t* p_obj, SSD1315_IO_t* p_
     p_obj->isInitialized = 0u;
     if(p_obj->io.init != NULL)
     {
-      ret = (SSD1315_Status_t)p_obj->io.init();
+      ret = (MOD_Status_t)p_obj->io.init();
     }
     else
     {
-      ret = SSD1315_ERR;
+      ret = MOD_ERR;
     }
   }
 
   return ret;
 }
 
-SSD1315_Status_t SSD1315_Init(SSD1315_Object_t* p_obj)
+MOD_Status_t MOD_Init(MOD_Object_t* p_obj)
 {
-  SSD1315_Status_t ret = SSD1315_OK;
-  uint8_t          data;
+  MOD_Status_t ret = MOD_OK;
+  uint8_t      data;
 
   if(p_obj != NULL)
   {
@@ -89,20 +89,20 @@ SSD1315_Status_t SSD1315_Init(SSD1315_Object_t* p_obj)
     }
     else
     {
-      ret = SSD1315_UNINITIALIZED;
+      ret = MOD_UNINITIALIZED;
     }
   }
   else
   {
-    ret = SSD1315_ERR;
+    ret = MOD_ERR;
   }
 
   return ret;
 }
 
-SSD1315_Status_t SSD1315_DeInit(SSD1315_Object_t* p_obj)
+MOD_Status_t MOD_DeInit(MOD_Object_t* p_obj)
 {
-  SSD1315_Status_t ret = SSD1315_OK;
+  MOD_Status_t ret = MOD_OK;
 
   if(p_obj != NULL)
   {
@@ -112,22 +112,22 @@ SSD1315_Status_t SSD1315_DeInit(SSD1315_Object_t* p_obj)
       p_obj->isInitialized = 0;
     }
 
-    if(ret != SSD1315_OK)
+    if(ret != MOD_OK)
     {
-      ret = SSD1315_UNINITIALIZED;
+      ret = MOD_UNINITIALIZED;
     }
   }
   else
   {
-    ret = SSD1315_ERR;
+    ret = MOD_ERR;
   }
   return ret;
 }
 
-SSD1315_Status_t SSD1315_DisplayOn(SSD1315_Object_t* p_obj)
+MOD_Status_t MOD_DisplayOn(MOD_Object_t* p_obj)
 {
-  SSD1315_Status_t ret = SSD1315_OK;
-  uint8_t          data;
+  MOD_Status_t ret = MOD_OK;
+  uint8_t      data;
 
   if(p_obj != NULL)
   {
@@ -138,23 +138,23 @@ SSD1315_Status_t SSD1315_DisplayOn(SSD1315_Object_t* p_obj)
     data = SSD1315_DISPLAY_ON;
     ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
 
-    if(ret != SSD1315_OK)
+    if(ret != MOD_OK)
     {
-      ret = SSD1315_ERR;
+      ret = MOD_ERR;
     }
   }
   else
   {
-    ret = SSD1315_ERR;
+    ret = MOD_ERR;
   }
 
   return ret;
 }
 
-SSD1315_Status_t SSD1315_DisplayOff(SSD1315_Object_t* p_obj)
+MOD_Status_t MOD_DisplayOff(MOD_Object_t* p_obj)
 {
-  SSD1315_Status_t ret = SSD1315_OK;
-  uint8_t          data;
+  MOD_Status_t ret = MOD_OK;
+  uint8_t      data;
 
   if(p_obj != NULL)
   {
@@ -165,22 +165,22 @@ SSD1315_Status_t SSD1315_DisplayOff(SSD1315_Object_t* p_obj)
     data = SSD1315_DISPLAY_OFF;
     ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
 
-    if(ret != SSD1315_OK)
+    if(ret != MOD_OK)
     {
-      ret = SSD1315_ERR;
+      ret = MOD_ERR;
     }
   }
   else
   {
-    ret = SSD1315_ERR;
+    ret = MOD_ERR;
   }
   return ret;
 }
 
-SSD1315_Status_t SSD1315_Refresh(SSD1315_Object_t* p_obj)
+MOD_Status_t MOD_Refresh(MOD_Object_t* p_obj)
 {
-  SSD1315_Status_t ret = SSD1315_OK;
-  uint8_t          data;
+  MOD_Status_t ret = MOD_OK;
+  uint8_t      data;
 
   if(p_obj != NULL)
   {
@@ -200,20 +200,20 @@ SSD1315_Status_t SSD1315_Refresh(SSD1315_Object_t* p_obj)
     ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
     ret += WriteRegWrap(p_obj, SSD1315_REG_DATA, p_obj->frameBuffer, COLUMN_NUMBER * PAGE_NUMBER);
 
-    if(ret != SSD1315_OK)
+    if(ret != MOD_OK)
     {
-      ret = SSD1315_ERR;
+      ret = MOD_ERR;
     }
   }
   else
   {
-    ret = SSD1315_ERR;
+    ret = MOD_ERR;
   }
 
   return ret;
 }
 
-static void Clear(SSD1315_Object_t* p_obj)
+static void Clear(MOD_Object_t* p_obj)
 {
   /* Check color */
   if(p_obj->backgroundColor == SSD1315_COLOR_WHITE)
@@ -226,17 +226,17 @@ static void Clear(SSD1315_Object_t* p_obj)
   }
 }
 
-static int32_t WriteRegWrap(SSD1315_Object_t* p_obj, uint16_t u_reg, uint8_t* u_data, uint16_t u_length)
+static int32_t WriteRegWrap(MOD_Object_t* p_obj, uint16_t u_reg, uint8_t* u_data, uint16_t u_length)
 {
   return p_obj->io.writeReg(u_reg, u_data, u_length);
 }
 
-static SSD1315_Status_t Delay(SSD1315_Object_t* p_obj, uint32_t u_delay)
+static MOD_Status_t Delay(MOD_Object_t* p_obj, uint32_t u_delay)
 {
   uint32_t tickStart;
   tickStart = p_obj->io.getTick();
   while((p_obj->io.getTick() - tickStart) < u_delay)
   {
   }
-  return SSD1315_OK;
+  return MOD_OK;
 }
