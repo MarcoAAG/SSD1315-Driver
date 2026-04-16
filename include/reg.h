@@ -15,8 +15,8 @@
  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef SSD1315_REG_H
-#define SSD1315_REG_H
+#ifndef OLED_REG_H
+#define OLED_REG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -79,4 +79,4 @@ extern "C" {
 }
 #endif
 
-#endif /* SSD1315_REG_H */
+#endif /* OELD_REG_H */
