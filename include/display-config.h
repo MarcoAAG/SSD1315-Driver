@@ -1,9 +1,9 @@
 #ifndef DISPLAY_CONFIG_H
 #define DISPLAY_CONFIG_H
 
-#define NONE           0
-#define SSD1315        1
-#define SSD1309        2
+#define SSD1315
+// #define SSD1309
+// #define SH1107
 
 #define DISPLAY_WIDTH  128
 #define DISPLAY_HEIGHT 64

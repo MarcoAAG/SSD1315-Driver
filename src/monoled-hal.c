@@ -64,7 +64,11 @@ MONOLED_Status_t MONOLED_Init(MONOLED_Object_t* p_obj)
     if(p_obj->isInitialized == 0u)
     {
       p_obj->isInitialized = 1u;
+#if defined(SSD1315) || defined(SSD1309)
+      data = SSD1315_DISPLAY_ON;
+      ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
       (void)Delay(p_obj, 100u);
+#else
       /* Driving ability setting */
       data = SSD1315_READWRITE_CMD;
       ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
@@ -84,6 +88,7 @@ MONOLED_Status_t MONOLED_Init(MONOLED_Object_t* p_obj)
       ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
       data = SSD1315_DISPLAY_ON;
       ret += WriteRegWrap(p_obj, SSD1315_REG_CONTROL, &data, 1u);
+#endif
       Clear(p_obj);
       ret += WriteRegWrap(p_obj, SSD1315_REG_DATA, p_obj->frameBuffer, COLUMN_NUMBER * PAGE_NUMBER);
     }
